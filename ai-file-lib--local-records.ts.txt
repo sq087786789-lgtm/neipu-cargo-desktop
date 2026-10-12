@@ -1,0 +1,33 @@
+import {z} from 'zod';
+import {validate,type Plan,type Cargo} from './cargo.ts';
+const dim=z.number().min(1).max(3000),weight=z.number().min(0).max(100000).nullable();
+const cargo=z.object({id:z.string().min(1).max(100),kind:z.enum(['net','pipe','mesh','accessory','gate']),name:z.string().min(1).max(100),l:dim,w:dim,h:dim,weight,rolls:z.number().int().min(0).max(10),x:z.number().min(0).max(30000),y:z.number().min(0).max(30000),z:z.number().min(0).max(30000),rotated:z.boolean()});
+const plan=z.object({title:z.string().min(1).max(100),pickup:z.string().max(200),destination:z.string().max(200),date:z.string().max(30),note:z.string().max(2000),truck:z.object({l:dim,w:dim,h:dim,capacity:weight}),grid:z.object({l:z.number().min(10).max(3000),w:z.number().min(10).max(3000)}).optional(),items:z.array(cargo).max(100)}).superRefine((p,ctx)=>{if(new Set(p.items.map(i=>i.id)).size!==p.items.length)ctx.addIssue({code:'custom',message:'貨物編號重複'});const error=validate(p.items);if(error)ctx.addIssue({code:'custom',message:error});});
+const record=z.discriminatedUnion('type',[
+ z.object({id:z.string().min(1).max(100),type:z.literal('plan'),title:z.string().min(1).max(100),updated:z.string().datetime(),payload:plan}),
+ z.object({id:z.string().min(1).max(100),type:z.literal('preset'),title:z.string().min(1).max(100),updated:z.string().datetime(),payload:cargo})
+]);
+const records=z.array(record).max(500).superRefine((rs,ctx)=>{if(new Set(rs.map(r=>r.id)).size!==rs.length)ctx.addIssue({code:'custom',message:'出貨單編號重複'});});
+const backup=z.object({format:z.literal('neipu-cargo-backup'),version:z.literal(1),exported:z.string().datetime(),records});
+export type LocalRecord=z.infer<typeof record>;
+const KEY='neipu-cargo-records-v1';
+type StorageAccess=Pick<Storage,'getItem'|'setItem'>;
+export function readRecords(storage:StorageAccess=localStorage):LocalRecord[]{
+ try{const raw=storage.getItem(KEY);return raw===null?[]:records.parse(JSON.parse(raw));}catch{throw new Error('無法讀取電腦資料，請保留資料並匯入備份；不要清除瀏覽器資料。');}
+}
+function writeRecords(rs:LocalRecord[],storage:StorageAccess){const parsed=records.parse(rs);try{storage.setItem(KEY,JSON.stringify(parsed));}catch{throw new Error('儲存失敗，可能是空間不足或瀏覽器禁止儲存。請先匯出備份，畫面資料仍保留。');}}
+export function saveRecord(type:'plan'|'preset',title:string,payload:Plan|Cargo,id?:string,storage:StorageAccess=localStorage):LocalRecord{
+ const rs=readRecords(storage);const next=record.parse({id:id??crypto.randomUUID(),type,title,payload,updated:new Date().toISOString()});
+ const index=rs.findIndex(r=>r.id===next.id);if(index>=0){if(rs[index].type!==type)throw new Error('資料類別不符');rs[index]=next;}else rs.push(next);writeRecords(rs,storage);return next;
+}
+export function exportBackup(current:Plan,id?:string,storage:StorageAccess=localStorage):string{
+ const rs=readRecords(storage);const snapshot=record.parse({id:id??crypto.randomUUID(),type:'plan',title:current.title.trim()||'新出貨單',payload:{...current,title:current.title.trim()||'新出貨單'},updated:new Date().toISOString()});
+ const index=rs.findIndex(r=>r.id===snapshot.id);if(index>=0)rs[index]=snapshot;else rs.push(snapshot);
+ return JSON.stringify(backup.parse({format:'neipu-cargo-backup',version:1,exported:new Date().toISOString(),records:rs}),null,2);
+}
+export function importBackup(text:string,storage:StorageAccess=localStorage):number{
+ if(text.length>10000000)throw new Error('備份檔太大，請使用10 MB以內的裝車助手備份。');
+ let incoming:LocalRecord[];try{incoming=backup.parse(JSON.parse(text)).records;}catch{throw new Error('備份格式或貨物排列不正確，原有出貨單沒有變更。');}
+ const rs=readRecords(storage);let added=0;for(const r of incoming){const existing=rs.find(i=>i.id===r.id);if(existing&&JSON.stringify(existing.payload)===JSON.stringify(r.payload))continue;rs.push(existing?{...r,id:crypto.randomUUID()}:r);added++;}
+ writeRecords(rs,storage);return added;
+}

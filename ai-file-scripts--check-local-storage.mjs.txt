@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {samplePlan} from '../lib/cargo.ts';
+import {readRecords,saveRecord,exportBackup,importBackup} from '../lib/local-records.ts';
+const makeStorage=()=>{let value=null;return{getItem:()=>value,setItem:(_,v)=>{value=v;}};};
+const first=makeStorage(),second=makeStorage();const p=samplePlan();
+const r=saveRecord('plan',p.title,p,undefined,first);saveRecord('preset',p.items[0].name,p.items[0],undefined,first);
+p.title='尚未儲存的修改';p.grid={l:100,w:80};
+const text=exportBackup(p,r.id,first);assert.equal(readRecords(first).find(i=>i.id===r.id).payload.title,'示範出貨單');
+assert.equal(importBackup(text,second),2);assert.deepEqual(readRecords(second).find(i=>i.id===r.id).payload.grid,{l:100,w:80});
+assert.equal(importBackup(text,second),0);assert.equal(readRecords(second).length,2);
+const before=JSON.stringify(readRecords(second));assert.throws(()=>importBackup('{broken',second));assert.equal(JSON.stringify(readRecords(second)),before);
+const malformed=JSON.parse(text);malformed.records[0].payload.grid.l=0;assert.throws(()=>importBackup(JSON.stringify(malformed),second));assert.equal(JSON.stringify(readRecords(second)),before);
+const collision=JSON.parse(text);collision.records[0].payload.items[1].z=0;assert.throws(()=>importBackup(JSON.stringify(collision),second));assert.equal(JSON.stringify(readRecords(second)),before);
+const changed=JSON.parse(text);changed.records[0].payload.title='不同版本';assert.equal(importBackup(JSON.stringify(changed),second),1);assert.equal(readRecords(second).length,3);assert.ok(readRecords(second).some(i=>i.payload.title==='尚未儲存的修改'));
+assert.throws(()=>saveRecord('plan',p.title,p,undefined,{getItem:()=>null,setItem:()=>{throw new Error('quota');}}),/儲存失敗/);
+const legacy=samplePlan();delete legacy.grid;saveRecord('plan',legacy.title,legacy,undefined,first);
+console.log('PASS: local save, unsaved draft backup, restore, duplicate imports, conflicting versions preserved, malformed and intersecting cargo rejected atomically, storage failure, legacy plans.');

@@ -1,0 +1,2 @@
+.pallet-grid-settings{margin-top:20px;padding-top:18px;border-top:1px solid var(--border)}.pallet-grid-settings h2{margin:0 0 12px!important}.grid-caption{font-size:.875rem;line-height:1.7;color:var(--foreground)}.scene-grid-label{padding:10px 14px;background:#fff;color:#142b42;border-top:1px solid #dce4ec;font-size:.875rem}
+.local-storage-notice{margin:0 0 16px;padding:12px 16px;border:1px solid #c9dedb;border-radius:12px;background:#eaf5f2;font-size:.875rem;line-height:1.7}.header-actions{flex-wrap:wrap}

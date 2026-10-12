@@ -1,0 +1,14 @@
+import {readFileSync,writeFileSync,mkdirSync,readdirSync} from 'node:fs';
+import path from 'node:path';
+const root=path.resolve(import.meta.dirname,'..');
+let html=readFileSync(path.join(root,'dist/index.html'),'utf8');
+html=html.replace(/<script[^>]*src="([^"]+)"[^>]*><\/script>/g,(_,src)=>'<script type="module">'+readFileSync(path.join(root,'dist',src),'utf8').replace(/<\/script/gi,'<\\/script')+'</script>');
+html=html.replace(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g,(_,src)=>'<style>'+readFileSync(path.join(root,'dist',src),'utf8').replace(/<\/style/gi,'<\\/style')+'</style>');
+if(/(?:src|href)="\.\/assets\//.test(html))throw new Error('Missing embedded assets');
+mkdirSync(path.join(root,'publish'),{recursive:true});
+writeFileSync(path.join(root,'publish/index.html'),html);
+writeFileSync(path.join(root,'publish/.nojekyll'),'');
+writeFileSync(path.join(root,'publish/README.md'),'# 內埔裝車助手・電腦版\n\n開啟 GitHub Pages 網址即可使用。不需要 GPT 帳號。出貨單儲存在這台電腦的瀏覽器；請定期匯出備份。\n\nindex.html 是可直接執行的完整網頁。source.zip 為原始程式與建置說明。\n\n舊 Sites 雲端出貨單尚未轉入本版，請另外保留。備份檔包含出貨資料，不要上傳到公開儲存庫。\n');
+const notices=[];for(const name of ['react','react-dom','three','lucide-react','radix-ui','class-variance-authority','clsx','tailwind-merge','sonner','zod']){const dir=path.join(root,'node_modules',name);for(const f of readdirSync(dir).filter(f=>/^licen[sc]e/i.test(f)))notices.push(`\n## ${name}\n\n`+readFileSync(path.join(dir,f),'utf8'));}
+writeFileSync(path.join(root,'publish/THIRD_PARTY_NOTICES.txt'),notices.join('\n'));
+console.log('Created self-contained publish/index.html with all application assets embedded.');

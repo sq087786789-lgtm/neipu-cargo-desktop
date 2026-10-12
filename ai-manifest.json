@@ -1,0 +1,190 @@
+{
+  "format": "neipu-cargo-source",
+  "version": 1,
+  "app_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/",
+  "readme_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/AI_README.md",
+  "source_bundle_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-source.json",
+  "encoding": "UTF-8",
+  "files": [
+    {
+      "path": "index.html",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-index.html.txt",
+      "sha256": "5ec183950c3287120a3e5ac10cb255ce60b28ce278a214eaaa937cb04d0381cb",
+      "bytes": 666
+    },
+    {
+      "path": "main.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-main.tsx.txt",
+      "sha256": "7a58dd13db209b8298fe8faab3d4e58618e9c21f6591c0fa890233cb5b6b1a0b",
+      "bytes": 179
+    },
+    {
+      "path": "package.json",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-package.json.txt",
+      "sha256": "0c042f70228e7794a848a1f64ac0236d068e219625e6e6c839505d2189bfd0ee",
+      "bytes": 1021
+    },
+    {
+      "path": "package-lock.json",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-package-lock.json.txt",
+      "sha256": "4e76dcfbad4186de0ee562445aedc068436766efdaafa96d4c48d77df2314e97",
+      "bytes": 132101
+    },
+    {
+      "path": "postcss.config.mjs",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-postcss.config.mjs.txt",
+      "sha256": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+      "bytes": 94
+    },
+    {
+      "path": "tsconfig.json",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-tsconfig.json.txt",
+      "sha256": "1ed4b3ed1b2870502766b0d79b82ca3948f5d3007bd6ba56134ed5aa3b388784",
+      "bytes": 380
+    },
+    {
+      "path": "vite.config.ts",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-vite.config.ts.txt",
+      "sha256": "3ee17392964175329bbbf92fe6ed21f6e1d1862e7e1bfb646671077580b21406",
+      "bytes": 243
+    },
+    {
+      "path": ".gitignore",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-.gitignore.txt",
+      "sha256": "a7de4d4c409c06abc8f91b5727ac2dcc5dc98f49cf50c5e7eb626fac82b593ee",
+      "bytes": 46
+    },
+    {
+      "path": "README.md",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-README.md.txt",
+      "sha256": "3e0ca3a41994dfa48013e2555afb053d5a3026ce038c7be582751ef874ee05ba",
+      "bytes": 2461
+    },
+    {
+      "path": "AI_README.md",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-AI_README.md.txt",
+      "sha256": "289821ebdf34daced0fe64a578289d1d49556b18afda761e764999a3b9d9156f",
+      "bytes": 4485
+    },
+    {
+      "path": "app/cargo-app.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo-app.tsx.txt",
+      "sha256": "1a1d6993ec05320d60632b539a6447d2e5e494642964424402bd260702a73390",
+      "bytes": 28708
+    },
+    {
+      "path": "app/cargo-scene.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo-scene.tsx.txt",
+      "sha256": "e6f30bc5cb97791c64a5c85ff5e8819916dfe82d22e7f7ca13b6e9c798fedd94",
+      "bytes": 9241
+    },
+    {
+      "path": "app/globals.css",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--globals.css.txt",
+      "sha256": "760d664c45bfeaa8fc397c5441877f0162e534919b139079c2b1a30e387ebbe4",
+      "bytes": 3666
+    },
+    {
+      "path": "app/cargo.css",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo.css.txt",
+      "sha256": "fdfb6abdc9ff8f53a4645a66e7d3da11a4ee4333b57b933598b0e2b7bb3dc9b5",
+      "bytes": 6657
+    },
+    {
+      "path": "app/pallet-grid.css",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--pallet-grid.css.txt",
+      "sha256": "9bb4cf01f4578584f8334af688b5ff2e42df51e5a39e821d462fe0ab9418c5b9",
+      "bytes": 513
+    },
+    {
+      "path": "lib/cargo.ts",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-lib--cargo.ts.txt",
+      "sha256": "dcfdc410b33f5b6a27a1272fe4cd262c2db7a1beae7e69e835713ffc418c061a",
+      "bytes": 4849
+    },
+    {
+      "path": "lib/local-records.ts",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-lib--local-records.ts.txt",
+      "sha256": "629c8b044a4b7e22b05d30d1c6c935781dc1797a66264ac1dd7ce4290b4ed2ee",
+      "bytes": 4096
+    },
+    {
+      "path": "lib/utils.ts",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-lib--utils.ts.txt",
+      "sha256": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68",
+      "bytes": 177
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-components--ui--button.tsx.txt",
+      "sha256": "cc36af0f8b5019c33cc039fbf03bb952a513072b15b55b53c592b78af3e5f4c4",
+      "bytes": 2392
+    },
+    {
+      "path": "components/ui/input.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-components--ui--input.tsx.txt",
+      "sha256": "8c4612a7c41319ac5049daa3b34b080f9784b6245c17780eb87c127e58e473db",
+      "bytes": 962
+    },
+    {
+      "path": "components/ui/textarea.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-components--ui--textarea.tsx.txt",
+      "sha256": "253cdeb487c73beaaccdf47fc163e36e7d5b7ae6ddf09a4f64998a109a112979",
+      "bytes": 759
+    },
+    {
+      "path": "components/ui/select.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-components--ui--select.tsx.txt",
+      "sha256": "0b796a108a4eb5ba52d9ad938b7aea36dc56ae66c703a6d0a23dbc24f96daff3",
+      "bytes": 6353
+    },
+    {
+      "path": "components/ui/dialog.tsx",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-components--ui--dialog.tsx.txt",
+      "sha256": "dce39c6adc47d997bd2567f8b7a72f466b0134715105cd42f9194007b8ecdb14",
+      "bytes": 4303
+    },
+    {
+      "path": "vendor/shadcn-tailwind-4.13.0.css",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-vendor--shadcn-tailwind-4.13.0.css.txt",
+      "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a",
+      "bytes": 16041
+    },
+    {
+      "path": "vendor/shadcn-tailwind-4.13.0.LICENSE.md",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-vendor--shadcn-tailwind-4.13.0.LICENSE.md.txt",
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+      "bytes": 1063
+    },
+    {
+      "path": "scripts/check-cargo.mjs",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-scripts--check-cargo.mjs.txt",
+      "sha256": "bceaded0f67a67504c6831d617168f2d285d5391797f2a700256cc8d76f48b49",
+      "bytes": 1271
+    },
+    {
+      "path": "scripts/check-local-storage.mjs",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-scripts--check-local-storage.mjs.txt",
+      "sha256": "5651b1c04c2c0f9e058048ed52ac34a56170ee86c02dfe416cfbda55e1abbf33",
+      "bytes": 2099
+    },
+    {
+      "path": "scripts/package-desktop.mjs",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-scripts--package-desktop.mjs.txt",
+      "sha256": "28c07311d94270d0e69d972a5c8079b8aab143d1e769aed2397709eb17609cf6",
+      "bytes": 1833
+    },
+    {
+      "path": "scripts/package-ai-handoff.mjs",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-scripts--package-ai-handoff.mjs.txt",
+      "sha256": "fa76cd621f9f372050d1d00c6a526e18d9c852c181e7297ad17dd88896d64af5",
+      "bytes": 4724
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-.github--workflows--pages.yml.txt",
+      "sha256": "c6d3182af7700e666a2bc32157f3971daf00490ba233c2ad07f2372bbab1692d",
+      "bytes": 1133
+    }
+  ]
+}

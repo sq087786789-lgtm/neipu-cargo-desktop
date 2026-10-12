@@ -1,0 +1,23 @@
+export type Kind = 'net' | 'pipe' | 'mesh' | 'accessory' | 'gate';
+export type Cargo = { id:string; kind:Kind; name:string; l:number; w:number; h:number; weight:number|null; rolls:number; x:number; y:number; z:number; rotated:boolean };
+export type Truck = { l:number; w:number; h:number; capacity:number|null };
+export type Grid = { l:number; w:number };
+export const DEFAULT_GRID:Grid={l:120,w:120};
+export const LEGACY_GRID:Grid={l:50,w:50};
+export type Plan = { title:string; pickup:string; destination:string; date:string; note:string; truck:Truck; grid?:Grid; items:Cargo[] };
+export const labels:Record<Kind,string>={net:'菱形網',pipe:'鍍鋅管',mesh:'點焊網',accessory:'配件',gate:'大門含門柱'};
+export const colors:Record<Kind,string>={net:'#159c92',pipe:'#447ec3',mesh:'#9473c7',accessory:'#df9a34',gate:'#cf6880'};
+export const stackable=(kind:Kind)=>kind==='net'||kind==='pipe'||kind==='mesh';
+export const dims=(a:Cargo)=>({l:a.rotated?a.w:a.l,w:a.rotated?a.l:a.w,h:a.h});
+const eps=.15;
+export function overlap(a:Cargo,b:Cargo){const d=dims(a),e=dims(b);return a.x<b.x+e.l-eps&&a.x+d.l>b.x+eps&&a.z<b.z+e.w-eps&&a.z+d.w>b.z+eps&&a.y<b.y+e.h-eps&&a.y+d.h>b.y+eps;}
+export function supports(a:Cargo,b:Cargo){const d=dims(a),e=dims(b);return stackable(a.kind)&&a.kind===b.kind&&Math.abs(a.y+d.h-b.y)<eps&&b.x>=a.x-eps&&b.z>=a.z-eps&&b.x+e.l<=a.x+d.l+eps&&b.z+e.w<=a.z+d.w+eps;}
+export function validate(items:Cargo[]){for(const a of items){if(a.x<0||a.z<0)return '位置不能小於 0 公分';if(a.y<-.1)return '貨物不能低於車廂地板';if(!stackable(a.kind)&&a.y>.1)return '配件和大門只能單層擺放';if(a.y>.1&&!items.some(b=>b.id!==a.id&&supports(b,a)))return '請放在地板，或完全放在同類網綑／管綑上';for(const b of items)if(a.id!==b.id&&overlap(a,b))return '貨物位置重疊，請移到空位';}return null;}
+export function topAt(item:Cargo,x:number,z:number,others:Cargo[]){const d=dims(item);let y=0;if(stackable(item.kind))for(const b of others){const e=dims(b);if(b.kind===item.kind&&x>=b.x-eps&&z>=b.z-eps&&x+d.l<=b.x+e.l+eps&&z+d.w<=b.z+e.w+eps)y=Math.max(y,b.y+e.h);}return y;}
+export function descendants(id:string,items:Cargo[]){const found=new Set([id]);let changed=true;while(changed){changed=false;for(const b of items)if(!found.has(b.id)&&items.some(a=>found.has(a.id)&&supports(a,b))){found.add(b.id);changed=true;}}return found;}
+export function move(items:Cargo[],id:string,x:number,z:number,y?:number){const a=items.find(i=>i.id===id);if(!a)return{items,error:'找不到貨物'};const group=descendants(id,items),others=items.filter(i=>!group.has(i.id));const nextY=y??topAt(a,x,z,others);const next=items.map(i=>group.has(i.id)?{...i,x:i.x+x-a.x,z:i.z+z-a.z,y:i.y+nextY-a.y}:i);return {items:next,error:validate(next)};}
+export function inTruck(a:Cargo,t:Truck){const d=dims(a);return a.x>=-.1&&a.z>=-.1&&a.y>=-.1&&a.x+d.l<=t.l+.1&&a.z+d.w<=t.w+.1&&a.y+d.h<=t.h+.1;}
+export function place(item:Cargo,items:Cargo[],truck:Truck){const xs=[0,...items.flatMap(a=>[a.x,a.x+dims(a).l+5])],zs=[0,...items.flatMap(a=>[a.z,a.z+dims(a).w+5])];for(const rotated of [false,true])for(const z of zs)for(const x of xs){const a={...item,rotated,x,z,y:0};if(inTruck(a,truck)&&!validate([...items,a]))return a;}if(stackable(item.kind))for(const base of items){const a={...item,x:base.x,z:base.z,y:base.y+base.h,rotated:base.rotated};if(inTruck(a,truck)&&!validate([...items,a]))return a;}return {...item,x:truck.l+20,z:items.filter(a=>!inTruck(a,truck)).reduce((s,a)=>s+dims(a).w+10,0),y:0};}
+export function summary(items:Cargo[],truck:Truck){const l=items.length?Math.max(...items.map(a=>a.x+dims(a).l))-Math.min(...items.map(a=>a.x)):0,w=items.length?Math.max(...items.map(a=>a.z+dims(a).w))-Math.min(...items.map(a=>a.z)):0,h=items.length?Math.max(...items.map(a=>a.y+a.h)):0,volume=items.reduce((s,a)=>s+a.l*a.w*a.h/1e6,0),unknown=items.filter(a=>a.weight===null).length,weight=items.reduce((s,a)=>s+(a.weight??0),0),outside=items.filter(a=>!inTruck(a,truck));return{l,w,h,volume,unknown,weight,outside,overweight:truck.capacity!==null&&weight>truck.capacity};}
+export const newPlan=():Plan=>({title:'新出貨單',pickup:'屏東縣內埔鄉',destination:'',date:new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Taipei'}),note:'',truck:{l:650,w:240,h:220,capacity:null},grid:{...DEFAULT_GRID},items:[]});
+export function samplePlan():Plan{const p=newPlan();p.title='示範出貨單';p.items=[{id:'sample-pipe',kind:'pipe',name:'600 公分管綑',l:600,w:80,h:60,weight:null,rolls:0,x:0,z:0,y:0,rotated:false},{id:'sample-net',kind:'net',name:'6 台尺菱形網・10 捲',l:181.8,w:120,h:90,weight:null,rolls:10,x:0,z:85,y:0,rotated:false},{id:'sample-accessory',kind:'accessory',name:'配件包',l:30,w:20,h:40,weight:null,rolls:0,x:190,z:85,y:0,rotated:false}];return p;}
