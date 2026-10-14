@@ -4,7 +4,9 @@ const p=samplePlan();assert.equal(validate(p.items),null);assert.equal(summary(p
 const base=p.items[1],top={...base,id:'top',y:90};const stacked=[base,top];assert.equal(validate(stacked),null);assert.equal(summary(stacked,p.truck).h,180);assert.equal(descendants(base.id,stacked).size,2);
 const relocated=move(stacked,base.id,20,30);assert.equal(relocated.error,null);assert.equal(relocated.items[1].x,20);assert.equal(relocated.items[1].y,180-90);
 assert.ok(validate([{...p.items[2],y:40}]));assert.ok(validate([{...p.items[2]}, {...p.items[2],id:'duplicate'}]));
-assert.ok(validate([base,{...top,w:150}]));assert.equal(summary([{...top,y:180}],p.truck).outside.length,1);
+assert.ok(validate([base,{...top,w:150}]));assert.equal(summary([{...top,y:180}],p.truck).outside.length,0);
+const tall={...base,h:300};assert.equal(summary([tall],p.truck).outside.length,0);assert.equal(summary([tall],p.truck).h,300);assert.equal(summary([{...tall,x:p.truck.l}],p.truck).outside.length,1);assert.equal(summary([{...tall,z:p.truck.w}],p.truck).outside.length,1);assert.equal(summary([{...tall,y:-1}],p.truck).outside.length,1);
+const lowLegacyTruck={...p.truck,l:base.l,w:base.w,h:50};const tallBase={...base,id:'tall-base',x:0,z:0,h:300};const placedHigh=place({...base,id:'over-legacy-height'},[tallBase],lowLegacyTruck);assert.equal(placedHigh.y,300);assert.equal(validate([tallBase,placedHigh]),null);assert.equal(summary([tallBase,placedHigh],lowLegacyTruck).outside.length,0);
 const loose={...base,id:'loose',name:'3 台尺・3 捲',l:90.9,w:90,h:30,rolls:3};assert.equal(summary([loose],p.truck).volume,90.9*90*30/1e6);assert.equal(summary([loose],p.truck).unknown,1);
 const placed=place({...p.items[0],id:'another-pipe'},p.items,p.truck);assert.equal(validate([...p.items,placed]),null);
 console.log('PASS: dimensions, partial bundles, stacking, support, collision, moving a stack, capacity, weight, placement');
