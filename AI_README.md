@@ -12,7 +12,7 @@
 
 所有原始程式的 JSON 檔：https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-source.json
 
-原始程式 ZIP：https://sq087786789-lgtm.github.io/neipu-cargo-desktop/source.zip
+最新版原始程式 ZIP：請在 https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai.html 點「下載原始程式ZIP」。重建以 ai-manifest.json／ai-source.json 為準。
 
 GitHub：https://github.com/sq087786789-lgtm/neipu-cargo-desktop
 
@@ -51,3 +51,7 @@ GitHub：https://github.com/sq087786789-lgtm/neipu-cargo-desktop
 匯出格式 `neipu-cargo-backup`，version 1；匯入需保持既有验证，錯誤資料不能覆寫原有資料。清除瀏覽器資料前先匯出備份。
 
 保留第三方套件授權及vendor內授權檔。裝載依包裝外框估算，實際載重、固定、裝卸方式需由業主和司機確認。
+
+## 貨物尺寸標示
+
+立體圖預設在每件貨物上方標示編號、種類與打包後外框長×寬×高（cm），支援全部、僅選取或關閉。尺寸是貨物原始包裝尺寸，轉向不交換顯示數字；空間佔位仍依旋轉後尺寸計算。修改尺寸、移動或堆疊後標示同步，PNG 截圖包含當前標示。實際資料及儲存格式不變。
