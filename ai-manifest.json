@@ -63,20 +63,20 @@
     {
       "path": "AI_README.md",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-AI_README.md.txt",
-      "sha256": "5b573eef698de3f2549400874af900e703c0cb47a0da84af02610c0b5b1f180f",
-      "bytes": 5097
+      "sha256": "93736962441cfccff4b0a59fa45b8da31a45cd917313e4861a9e2e4ec02f1491",
+      "bytes": 5399
     },
     {
       "path": "app/cargo-app.tsx",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo-app.tsx.txt",
-      "sha256": "2cdcddf6b1106608465bb622973fadd9bef2c44d3698e4acec71f45ae17f59d4",
-      "bytes": 29181
+      "sha256": "ee543676abce8febf0a8717c7fd13e7d4c91418c06b69162b6ebb381d1afb115",
+      "bytes": 29168
     },
     {
       "path": "app/cargo-scene.tsx",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo-scene.tsx.txt",
-      "sha256": "980495ae9a4f3a712afbd706f63a05d9ced5b77e732cf4cf22becd7a9a7c7228",
-      "bytes": 12788
+      "sha256": "870d8f79133bdc0635c1735dd5afe5e6591953924f046a6e4e976f66853cac7d",
+      "bytes": 12129
     },
     {
       "path": "app/globals.css",
@@ -99,8 +99,8 @@
     {
       "path": "lib/cargo.ts",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-lib--cargo.ts.txt",
-      "sha256": "88df8db40e2da10ced8e6292b55ec4862636896cb7c50075c15e1750c87c1261",
-      "bytes": 4994
+      "sha256": "aed3f6e91e682b4cc7f0f5d9468c75cb2f71138277c66797bcfeeb49186abe65",
+      "bytes": 5064
     },
     {
       "path": "lib/local-records.ts",
@@ -159,8 +159,8 @@
     {
       "path": "scripts/check-cargo.mjs",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-scripts--check-cargo.mjs.txt",
-      "sha256": "2900355f3fa58618133aa3be5d8bd6bce87e878fd48649b86d782b6375ac4bab",
-      "bytes": 1676
+      "sha256": "fc8d32b3d7a41b0a4cc58303de030b19c332046de2db2be4586811319c71e75d",
+      "bytes": 2367
     },
     {
       "path": "scripts/check-local-storage.mjs",
