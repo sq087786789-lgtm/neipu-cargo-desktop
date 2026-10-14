@@ -9,6 +9,7 @@ export const labels:Record<Kind,string>={net:'菱形網',pipe:'鍍鋅管',mesh:'
 export const colors:Record<Kind,string>={net:'#159c92',pipe:'#447ec3',mesh:'#9473c7',accessory:'#df9a34',gate:'#cf6880'};
 export const stackable=(kind:Kind)=>kind==='net'||kind==='pipe'||kind==='mesh';
 export const dims=(a:Cargo)=>({l:a.rotated?a.w:a.l,w:a.rotated?a.l:a.w,h:a.h});
+export const cargoDimensionText=(a:Cargo)=>`長 ${Number(a.l.toFixed(2))} × 寬 ${Number(a.w.toFixed(2))} × 高 ${Number(a.h.toFixed(2))} cm`;
 const eps=.15;
 export function overlap(a:Cargo,b:Cargo){const d=dims(a),e=dims(b);return a.x<b.x+e.l-eps&&a.x+d.l>b.x+eps&&a.z<b.z+e.w-eps&&a.z+d.w>b.z+eps&&a.y<b.y+e.h-eps&&a.y+d.h>b.y+eps;}
 export function supports(a:Cargo,b:Cargo){const d=dims(a),e=dims(b);return stackable(a.kind)&&a.kind===b.kind&&Math.abs(a.y+d.h-b.y)<eps&&b.x>=a.x-eps&&b.z>=a.z-eps&&b.x+e.l<=a.x+d.l+eps&&b.z+e.w<=a.z+d.w+eps;}
