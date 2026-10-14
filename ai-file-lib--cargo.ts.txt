@@ -1,5 +1,6 @@
 export type Kind = 'net' | 'pipe' | 'mesh' | 'accessory' | 'gate';
 export type Cargo = { id:string; kind:Kind; name:string; l:number; w:number; h:number; weight:number|null; rolls:number; x:number; y:number; z:number; rotated:boolean };
+// h 保留給舊出貨單／備份相容；拖板車只依底板長寬判斷空間。
 export type Truck = { l:number; w:number; h:number; capacity:number|null };
 export type Grid = { l:number; w:number };
 export const DEFAULT_GRID:Grid={l:120,w:120};
@@ -17,7 +18,7 @@ export function validate(items:Cargo[]){for(const a of items){if(a.x<0||a.z<0)re
 export function topAt(item:Cargo,x:number,z:number,others:Cargo[]){const d=dims(item);let y=0;if(stackable(item.kind))for(const b of others){const e=dims(b);if(b.kind===item.kind&&x>=b.x-eps&&z>=b.z-eps&&x+d.l<=b.x+e.l+eps&&z+d.w<=b.z+e.w+eps)y=Math.max(y,b.y+e.h);}return y;}
 export function descendants(id:string,items:Cargo[]){const found=new Set([id]);let changed=true;while(changed){changed=false;for(const b of items)if(!found.has(b.id)&&items.some(a=>found.has(a.id)&&supports(a,b))){found.add(b.id);changed=true;}}return found;}
 export function move(items:Cargo[],id:string,x:number,z:number,y?:number){const a=items.find(i=>i.id===id);if(!a)return{items,error:'找不到貨物'};const group=descendants(id,items),others=items.filter(i=>!group.has(i.id));const nextY=y??topAt(a,x,z,others);const next=items.map(i=>group.has(i.id)?{...i,x:i.x+x-a.x,z:i.z+z-a.z,y:i.y+nextY-a.y}:i);return {items:next,error:validate(next)};}
-export function inTruck(a:Cargo,t:Truck){const d=dims(a);return a.x>=-.1&&a.z>=-.1&&a.y>=-.1&&a.x+d.l<=t.l+.1&&a.z+d.w<=t.w+.1&&a.y+d.h<=t.h+.1;}
+export function inTruck(a:Cargo,t:Truck){const d=dims(a);return a.x>=-.1&&a.z>=-.1&&a.y>=-.1&&a.x+d.l<=t.l+.1&&a.z+d.w<=t.w+.1;}
 export function place(item:Cargo,items:Cargo[],truck:Truck){const xs=[0,...items.flatMap(a=>[a.x,a.x+dims(a).l+5])],zs=[0,...items.flatMap(a=>[a.z,a.z+dims(a).w+5])];for(const rotated of [false,true])for(const z of zs)for(const x of xs){const a={...item,rotated,x,z,y:0};if(inTruck(a,truck)&&!validate([...items,a]))return a;}if(stackable(item.kind))for(const base of items){const a={...item,x:base.x,z:base.z,y:base.y+base.h,rotated:base.rotated};if(inTruck(a,truck)&&!validate([...items,a]))return a;}return {...item,x:truck.l+20,z:items.filter(a=>!inTruck(a,truck)).reduce((s,a)=>s+dims(a).w+10,0),y:0};}
 export function summary(items:Cargo[],truck:Truck){const l=items.length?Math.max(...items.map(a=>a.x+dims(a).l))-Math.min(...items.map(a=>a.x)):0,w=items.length?Math.max(...items.map(a=>a.z+dims(a).w))-Math.min(...items.map(a=>a.z)):0,h=items.length?Math.max(...items.map(a=>a.y+a.h)):0,volume=items.reduce((s,a)=>s+a.l*a.w*a.h/1e6,0),unknown=items.filter(a=>a.weight===null).length,weight=items.reduce((s,a)=>s+(a.weight??0),0),outside=items.filter(a=>!inTruck(a,truck));return{l,w,h,volume,unknown,weight,outside,overweight:truck.capacity!==null&&weight>truck.capacity};}
 export const newPlan=():Plan=>({title:'新出貨單',pickup:'屏東縣內埔鄉',destination:'',date:new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Taipei'}),note:'',truck:{l:650,w:240,h:220,capacity:null},grid:{...DEFAULT_GRID},items:[]});
