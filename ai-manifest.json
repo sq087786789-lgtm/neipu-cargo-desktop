@@ -69,8 +69,8 @@
     {
       "path": "app/cargo-app.tsx",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo-app.tsx.txt",
-      "sha256": "86602159d8c58a5a3e193fa115ea8df67f3ee0a853a9a7e68a61c16244eb7f91",
-      "bytes": 29109
+      "sha256": "2cdcddf6b1106608465bb622973fadd9bef2c44d3698e4acec71f45ae17f59d4",
+      "bytes": 29181
     },
     {
       "path": "app/cargo-scene.tsx",
