@@ -8,3 +8,5 @@ assert.ok(validate([base,{...top,w:150}]));assert.equal(summary([{...top,y:180}]
 const loose={...base,id:'loose',name:'3 台尺・3 捲',l:90.9,w:90,h:30,rolls:3};assert.equal(summary([loose],p.truck).volume,90.9*90*30/1e6);assert.equal(summary([loose],p.truck).unknown,1);
 const placed=place({...p.items[0],id:'another-pipe'},p.items,p.truck);assert.equal(validate([...p.items,placed]),null);
 console.log('PASS: dimensions, partial bundles, stacking, support, collision, moving a stack, capacity, weight, placement');
+
+const {cargoDimensionText}=await import('../lib/cargo.ts');assert.equal(cargoDimensionText(base),'長 181.8 × 寬 120 × 高 90 cm');assert.equal(cargoDimensionText({...base,rotated:true}),cargoDimensionText(base));assert.equal(cargoDimensionText(loose),'長 90.9 × 寬 90 × 高 30 cm');console.log('PASS: actual package dimension labels preserve decimals and physical length/width across rotation');
