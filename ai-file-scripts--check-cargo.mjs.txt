@@ -12,3 +12,13 @@ const placed=place({...p.items[0],id:'another-pipe'},p.items,p.truck);assert.equ
 console.log('PASS: dimensions, partial bundles, stacking, support, collision, moving a stack, capacity, weight, placement');
 
 const {cargoDimensionText}=await import('../lib/cargo.ts');assert.equal(cargoDimensionText(base),'長 181.8 × 寬 120 × 高 90 cm');assert.equal(cargoDimensionText({...base,rotated:true}),cargoDimensionText(base));assert.equal(cargoDimensionText(loose),'長 90.9 × 寬 90 × 高 30 cm');console.log('PASS: actual package dimension labels preserve decimals and physical length/width across rotation');
+
+const {cargoDimensionLabelIds}=await import('../lib/cargo.ts');
+const identical={...base,id:'same-spec',name:'另一綑',x:300,z:50,y:90,rotated:true},differentWidth={...base,id:'different-width',w:121},differentKind={...base,id:'different-kind',kind:'pipe'};
+const labelItems=[base,identical,differentWidth,differentKind];
+assert.deepEqual([...cargoDimensionLabelIds(labelItems,'all',null)],[base.id,differentWidth.id,differentKind.id]);
+assert.deepEqual([...cargoDimensionLabelIds(labelItems,'all',identical.id)],[identical.id,differentWidth.id,differentKind.id]);
+assert.deepEqual([...cargoDimensionLabelIds(labelItems,'selected',identical.id)],[identical.id]);
+assert.equal(cargoDimensionLabelIds(labelItems,'none',identical.id).size,0);
+assert.equal(cargoDimensionLabelIds(labelItems,'selected','missing').size,0);
+console.log('PASS: one dimension label per cargo type and package size, regardless of name, position, stack level or rotation; selected and hidden modes preserved');
