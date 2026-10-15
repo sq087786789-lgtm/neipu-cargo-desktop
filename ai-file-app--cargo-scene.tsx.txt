@@ -2,7 +2,7 @@
 import {useEffect,useRef,useState,forwardRef,useImperativeHandle} from 'react';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {Cargo,Truck,Grid,dims,colors,labels,inTruck,cargoDimensionText} from '@/lib/cargo';
+import {Cargo,Truck,Grid,dims,colors,labels,inTruck,cargoDimensionText,cargoDimensionLabelIds} from '@/lib/cargo';
 export type SceneApi={image:()=>string|null;view:(v:'3d'|'top'|'side')=>void};
 type Props={items:Cargo[];truck:Truck;grid:Grid;selected:string|null;mode:'move'|'orbit';dimensionMode:'all'|'selected'|'none';onSelect:(id:string)=>void;onMove:(id:string,x:number,z:number)=>boolean;onDragStart:()=>void};
 const CargoScene=forwardRef<SceneApi,Props>(function CargoScene(props,ref){
@@ -29,13 +29,13 @@ const CargoScene=forwardRef<SceneApi,Props>(function CargoScene(props,ref){
   return()=>{cancelAnimationFrame(frame);ro.disconnect();controls.dispose();renderer.domElement.removeEventListener('pointerdown',down,true);renderer.domElement.removeEventListener('pointermove',moving);renderer.domElement.removeEventListener('pointerup',up);renderer.domElement.removeEventListener('pointercancel',up);disposeGroup(cargo);disposeGroup(truck);renderer.dispose();renderer.domElement.remove();labelCanvas.remove();engine.current=null;};
  },[]);
  useEffect(()=>{const e=engine.current;if(!e)return;disposeGroup(e.truck);const t=props.truck;const floor=new THREE.Mesh(new THREE.BoxGeometry(t.l,5,t.w),new THREE.MeshStandardMaterial({color:'#d3dee8',roughness:.85}));floor.position.set(t.l/2,-3,t.w/2);e.truck.add(floor);const gridPoints:THREE.Vector3[]=[];for(let x=0;x<=t.l;x+=props.grid.l)gridPoints.push(new THREE.Vector3(x,.2,0),new THREE.Vector3(x,.2,t.w));for(let z=0;z<=t.w;z+=props.grid.w)gridPoints.push(new THREE.Vector3(0,.2,z),new THREE.Vector3(t.l,.2,z));e.truck.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gridPoints),new THREE.LineBasicMaterial({color:'#b6c6d3'})));e.truck.add(labelSprite(`長 ${t.l} cm`,t.l/2,0,-25,120,24),labelSprite(`寬 ${t.w} cm`,-50,0,t.w/2,120,24),labelSprite('車頭',t.l+35,5,t.w/2,65,24));},[props.truck,props.grid.l,props.grid.w]);
- useEffect(()=>{const e=engine.current;if(!e)return;disposeGroup(e.cargo);e.hits=[];props.items.forEach(a=>{
+ useEffect(()=>{const e=engine.current;if(!e)return;disposeGroup(e.cargo);e.hits=[];const labelIds=cargoDimensionLabelIds(props.items,props.dimensionMode,props.selected);props.items.forEach(a=>{
   const d=dims(a),group=new THREE.Group();group.position.set(a.x,a.y,a.z);e.cargo.add(group);const color=inTruck(a,props.truck)?colors[a.kind]:'#cf4057';
   const box=new THREE.Mesh(new THREE.BoxGeometry(d.l,d.h,d.w),new THREE.MeshStandardMaterial({color,transparent:true,opacity:a.id===props.selected? .65:.3,roughness:.65,depthWrite:false}));box.position.set(d.l/2,d.h/2,d.w/2);box.userData.id=a.id;group.add(box);e.hits.push(box);
   const edge=new THREE.LineSegments(new THREE.EdgesGeometry(box.geometry),new THREE.LineBasicMaterial({color:a.id===props.selected?'#102b43':color,linewidth:1}));edge.position.copy(box.position);group.add(edge);
   if(a.kind==='net'){const rows=Math.max(1,Math.floor(a.h/30)),cols=Math.max(1,Math.floor(a.w/30));for(let i=0;i<Math.min(a.rolls,rows*cols);i++){const cyl=new THREE.Mesh(new THREE.CylinderGeometry(13.5,13.5,a.l,12),new THREE.MeshStandardMaterial({color,roughness:.9,transparent:true,opacity:.65}));cyl.rotation.z=Math.PI/2;const cx=a.l/2,cy=15+Math.floor(i/cols)*30,cz=15+(i%cols)*30;if(a.rotated)cyl.rotation.set(Math.PI/2,0,0);cyl.position.set(a.rotated?cz:cx,cy,a.rotated?cx:cz);group.add(cyl);}}
   if(a.kind==='pipe'){for(let i=0;i<4;i++){const cyl=new THREE.Mesh(new THREE.CylinderGeometry(4,4,a.l,10),new THREE.MeshStandardMaterial({color:'#9baec1',metalness:.6,roughness:.5}));cyl.rotation.z=Math.PI/2;if(a.rotated)cyl.rotation.set(Math.PI/2,0,0);cyl.position.set(a.rotated?a.w*(i+1)/5:a.l/2,a.h*.6,a.rotated?a.l/2:a.w*(i+1)/5);group.add(cyl);}}
-  const showSize=props.dimensionMode==='all'||(props.dimensionMode==='selected'&&a.id===props.selected);
+  const showSize=labelIds.has(a.id);
   if(showSize)group.add(cargoSizeSprite(a,d.l/2,d.h+38,d.w/2));
  });},[props.items,props.truck,props.selected,props.dimensionMode]);
  return <div className="scene" ref={host}>{failure&&<p className="scene-error" role="alert">{failure}</p>}</div>;
