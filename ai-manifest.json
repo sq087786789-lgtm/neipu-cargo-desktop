@@ -63,8 +63,8 @@
     {
       "path": "AI_README.md",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-AI_README.md.txt",
-      "sha256": "3bd5ec09715a77c63a2f3a059d2783eeca135393b1f29462be42ed69692cec88",
-      "bytes": 5543
+      "sha256": "15fd61ed8cd09c4dad513bb6f4f31c360bdf10586cb0a7b2c6679dc4edc5d382",
+      "bytes": 5621
     },
     {
       "path": "app/cargo-app.tsx",
@@ -75,8 +75,8 @@
     {
       "path": "app/cargo-scene.tsx",
       "text_url": "https://sq087786789-lgtm.github.io/neipu-cargo-desktop/ai-file-app--cargo-scene.tsx.txt",
-      "sha256": "c5aab1146cb3b12bb591c385dca358f1ae8f553c95b3377d8f009a59f32c228a",
-      "bytes": 12960
+      "sha256": "23342836bf5ee0052f214f38842064fc36e4ae8f24fb305f0f51f1d5b45b6ea1",
+      "bytes": 12850
     },
     {
       "path": "app/globals.css",
